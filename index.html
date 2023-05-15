@@ -10,19 +10,27 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="./src/leaflet-compass.css" />
-    <script src="leaflet-src.js"></script>
+    <link rel="stylesheet" href="dist/leaflet-control-condended-attribution.css" />
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            width: 100%;
-            height: 100vh;
-        }
-    </style>
+  <!-- the demo-specific code -->
+  <style type="text/css">
+    body { padding: 0; margin: 0; }
+    html, body, #map { height: 100%; }
+    .leaflet-container .leaflet-control-attribution {
+      border-radius: 26px;
+    }
+    .leaflet-control-attribution .attributes-body {
+      height: 36px;
+      line-height: 36px;
+    }
+    .leaflet-control-attribution .attributes-emblem {
+      height: 36px;
+      width: 36px;
+    }
+    .emblem-wrap, .emblem-wrap img {
+      height: 20px;
+    }
+  </style>
 </head>
 
 <body>
@@ -31,9 +39,12 @@
 </html>
 
 <!-- leaflet js  -->
+<script src="./src/leaflet-compass.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="leaflet-src.js"></script>
 <script src="./src/leaflet-compass.js"></script>
+<script type="text/javascript" src="dist/leaflet-control-condended-attribution.js"></script>
 <script>
     
     /*// Map initialization
@@ -52,7 +63,7 @@
     let osm = new L.TileLayer(osmUrl, {
     attribution: osmAttrib,
     detectRetina: true
-    });
+    });   
     
 
     // please replace this with your own mapbox token!
@@ -64,35 +75,37 @@
     tileSize: 512,
     zoomOffset: -1,
     });
-    
-
+        
     let map = new L.Map("map", {
     layers: [mapbox],
     center: [6.217, -75.567],
     zoom: 13,
     zoomControl: true,
     rotate: true,
+    condensedAttributionControl: false
     });
-    
+ 
+    L.control.condensedAttribution({
+    }).addTo(map);
+
 
     // Agrega la localizacion 
-  L.control.locate({
-    setView: "always",
-    position: "bottomright",
-    keepCurrentZoomLevel: "true",
-    flyTo: "true",
-    showCompass: "true",
-    compassClass: "CompassMarker",
-    cacheLocation: "true",
-    initialZoomLevel: "18",
-    clickBehavior:{inViewNotFollowing: 'inView'}
+    L.control.locate({
+        setView: "always",
+        position: "bottomright",
+        keepCurrentZoomLevel: "true",
+        flyTo: "true",
+        showCompass: "true",
+        compassClass: "CompassMarker",
+        cacheLocation: "true",
+        initialZoomLevel: "18",
+        clickBehavior:{inViewNotFollowing: 'inView'}
   }).addTo(map);
 
   var comp = new L.Control.Compass({
     autoActive: true, 
     showDigit:true
-});
-
+    });
     map.addControl(comp);
 
 </script>

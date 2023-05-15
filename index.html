@@ -90,17 +90,24 @@
 
 
     // Agrega la localizacion 
-    L.control.locate({
+    var lc = L.control.locate({
+      locateOption: {
+          maxZoom: 19,
+          enableHighAccuracy: true
+        },
         setView: "always",
         position: "bottomright",
-        keepCurrentZoomLevel: "true",
-        flyTo: "true",
         showCompass: "true",
+        keepCurrentZoomLevel: "false",
+        flyTo: "true",
         compassClass: "CompassMarker",
-        cacheLocation: "true",
-        initialZoomLevel: "18",
+        // cacheLocation: "false",
+        initialZoomLevel: 18,
+        drawCircle: "false",
         clickBehavior:{inViewNotFollowing: 'inView'}
   }).addTo(map);
+
+  lc.start();
 
   var comp = new L.Control.Compass({
     autoActive: true, 

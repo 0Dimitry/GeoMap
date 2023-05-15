@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="./src/leaflet-compass.css" />
     <link rel="stylesheet" href="dist/leaflet-control-condended-attribution.css" />
+    <link rel="stylesheet" href="dist/L.Control.Locate.css" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
 
   <!-- the demo-specific code -->
   <style type="text/css">
@@ -39,12 +41,21 @@
 </html>
 
 <!-- leaflet js  -->
-<script src="./src/leaflet-compass.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="./src/leaflet-compass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 <script src="leaflet-src.js"></script>
 <script src="./src/leaflet-compass.js"></script>
 <script type="text/javascript" src="dist/leaflet-control-condended-attribution.js"></script>
+<script src="./src/L.Control.Locate.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <!-- Leaflet-Rotate -->
+<script src="https://unpkg.com/leaflet-rotate@0.2.7/dist/leaflet-rotate-src.js"></script>
+		<!-- include some miscellaneous -->
+<script src="https://unpkg.com/leaflet-rotate@0.2.7/misc/route.js"></script>
+<script src="https://unpkg.com/leaflet-rotate@0.2.7/misc/places.js"></script>
+<script src="https://unpkg.com/leaflet-rotate@0.2.7/misc/loremIpsum.js"></script>
+<script src="https://unpkg.com/leaflet-rotate@0.2.7/lib/debug.js"></script>
 <script>
     
     /*// Map initialization
@@ -62,7 +73,9 @@
     const osmAttrib = 'Map data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors';
     let osm = new L.TileLayer(osmUrl, {
     attribution: osmAttrib,
-    detectRetina: true
+    detectRetina: true,
+    maxZoom: 20,
+		maxNativeZoom: 19,
     });   
     
 
@@ -74,15 +87,24 @@
     attribution: mapboxAttrib,
     tileSize: 512,
     zoomOffset: -1,
+    maxZoom: 20,
+		maxNativeZoom: 18,
     });
         
     let map = new L.Map("map", {
-    layers: [mapbox],
-    center: [6.217, -75.567],
-    zoom: 13,
-    zoomControl: true,
-    rotate: true,
-    condensedAttributionControl: false
+      layers: [mapbox],
+      center: [6.217, -75.567],
+      zoom: 13,
+      zoomControl: true,
+      rotate: true,
+      rotateControl: {
+            closeOnZeroBearing: false,
+            position: 'topright',
+          },
+      bearing: 30,
+      touchRotate: true,
+      condensedAttributionControl: false,
+      tap: false
     });
  
     L.control.condensedAttribution({
@@ -90,22 +112,35 @@
 
 
     // Agrega la localizacion 
-    L.control.locate({
+    var lc = L.control.locate({
+      locateOption: {
+          maxZoom: 20,
+          enableHighAccuracy: true
+        },
         setView: "always",
         position: "bottomright",
-        keepCurrentZoomLevel: "true",
-        flyTo: "true",
         showCompass: "true",
+        keepCurrentZoomLevel: "false",
+        flyTo: "true",
         compassClass: "CompassMarker",
-        cacheLocation: "true",
-        initialZoomLevel: "18",
+        // cacheLocation: "false",
+        initialZoomLevel: 18,
+        drawCircle: "false",
         clickBehavior:{inViewNotFollowing: 'inView'}
   }).addTo(map);
 
+  lc.start();
+  
+
+    // Add zoom and rotation controls to the map.
+    map.addControl(new L.NavigationControl());
+    
   var comp = new L.Control.Compass({
     autoActive: true, 
     showDigit:true
     });
     map.addControl(comp);
+
+    L.Rotate.debug(map);
 
 </script>

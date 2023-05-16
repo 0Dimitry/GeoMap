@@ -9,7 +9,6 @@
     <!-- leaflet css  -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-    <link rel="stylesheet" href="./src/leaflet-compass.css" />
     <link rel="stylesheet" href="dist/leaflet-control-condended-attribution.css" />
     <link rel="stylesheet" href="dist/L.Control.Locate.css" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
@@ -45,7 +44,6 @@
 <script src="./src/leaflet-compass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 <script src="leaflet-src.js"></script>
-<script src="./src/leaflet-compass.js"></script>
 <script type="text/javascript" src="dist/leaflet-control-condended-attribution.js"></script>
 <script src="./src/L.Control.Locate.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
@@ -120,24 +118,18 @@
         setView: "always",
         position: "bottomright",
         showCompass: "true",
-        keepCurrentZoomLevel: "false",
+        //keepCurrentZoomLevel: "false",
         flyTo: "true",
         //compassClass: "CompassMarker",
         // cacheLocation: "false",
         initialZoomLevel: 18,
-        drawCircle: "false",
+        //drawCircle: "false",
         clickBehavior:{inViewNotFollowing: 'inView'}
   }).addTo(map);
   
 
     // Add zoom and rotation controls to the map.
     map.addControl(new L.NavigationControl());
-    
-  var comp = new L.Control.Compass({
-    autoActive: true, 
-    showDigit:true
-    });
-    map.addControl(comp);
 
     L.Rotate.debug(map);
 

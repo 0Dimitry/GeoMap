@@ -90,19 +90,20 @@
     });
         
     let map = new L.Map("map", {
-      layers: [mapbox],
-      center: [6.217, -75.567],
-      zoom: 13,
-      zoomControl: true,
-      rotate: true,
-      rotateControl: {
-            closeOnZeroBearing: false,
-            position: 'topright',
-          },
-      bearing: 0,
-      touchRotate: true,
-      condensedAttributionControl: false,
-      tap: false
+	    layers: [mapbox],
+	      center: [6.217, -75.567],
+	      zoom: 13,
+	      zoomControl: true,
+	      rotate: true,
+	      rotateControl: {
+		    closeOnZeroBearing: false,
+		    position: 'topright',
+		  },
+	      bearing: 0,
+	      touchRotate: true,
+	      trackContainerMutation: true,
+	      condensedAttributionControl: false,
+	      tap: false
     });
  
     L.control.condensedAttribution({

@@ -135,7 +135,7 @@
         var lng = e.latlng.lng;
         console.log("latitud: " + lat)
         console.log("longitud: " + lng)
-	window.postMessage({ lat: lat, lng: lng });
+	window.ReactNativeWebView.postMessage(JSON.stringify({ lat, lng }));
       }
 	
 	// Escucha los mensajes enviados desde la aplicación de React Native

@@ -135,6 +135,7 @@
         var lng = e.latlng.lng;
         console.log("latitud: " + lat)
         console.log("longitud: " + lng)
+	window.postMessage({ lat: lat, lng: lng });
       }
 
       function onLocationError(e) {

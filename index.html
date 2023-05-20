@@ -154,5 +154,20 @@
 
     // Add zoom and rotation controls to the map.
     //map.addControl(new L.NavigationControl());
+	
+	  fetch('src/mapCicloRutas.geojson')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+
+      var geoJSONStyle = {
+      color: '#46FF00'
+    };
+    L.geoJSON(data, {
+      style: geoJSONStyle
+    }).addTo(map);
+      
+    });
 
 </script>

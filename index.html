@@ -137,7 +137,14 @@
         console.log("longitud: " + lng)
 	window.postMessage({ lat: lat, lng: lng });
       }
-
+	
+	// Escucha los mensajes enviados desde la aplicación de React Native
+	window.addEventListener('message', function(event) {
+	  if (event.data && event.data.type === 'getLocation') {
+	    navigator.geolocation.getCurrentPosition(onLocationFound);
+	  }
+	});
+	
       function onLocationError(e) {
         alert(e.message);
       }

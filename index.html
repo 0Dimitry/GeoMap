@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
     <link rel="stylesheet" href="dist/leaflet-control-condended-attribution.css" />
-    <link rel="stylesheet" href="dist/L.Control.Locate.css" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
 
   <!-- the demo-specific code -->
@@ -35,15 +34,13 @@
 </head>
 
 <body>
-    <div id="map" style="position:absolute;top:0;right:0;bottom:0;left:0"></div>
+    <div id="map" style="position:relative;top:0;right:0;bottom:0;left:0"></div>
 </body>
 </html>
 
 <!-- leaflet js  -->
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-<script src="./src/leaflet-compass.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
-<script src="leaflet-src.js"></script>
 <script type="text/javascript" src="dist/leaflet-control-condended-attribution.js"></script>
 <script src="./src/L.Control.Locate.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
@@ -90,21 +87,22 @@
     });
         
     let map = new L.Map("map", {
-	    layers: [mapbox],
-	      center: [6.217, -75.567],
-	      zoom: 13,
-	      zoomControl: true,
-	      rotate: true,
-	      rotateControl: {
-		    closeOnZeroBearing: false,
-		    position: 'topright',
-		  },
-	      bearing: 0,
-	      touchRotate: true,
-	      //trackContainerMutation: false,
-              compassBearing: false,
-	      condensedAttributionControl: false,
-	      tap: false
+      layers: [mapbox],
+      center: [6.217, -75.567],
+      zoom: 13,
+      zoomControl: true,
+      rotate: true,
+      rotateControl: {
+            closeOnZeroBearing: false,
+            position: 'topright',
+          },
+      bearing: 0,
+      touchRotate: true,
+      trackContainerMutation: false,
+      compassBearing: false,
+      shiftKeyRotate: false,
+      condensedAttributionControl: false,
+      tap: false
     });
  
     L.control.condensedAttribution({
@@ -114,20 +112,22 @@
     // Agrega la localizacion 
     var lc = L.control.locate({
       locateOption: {
-          //maxZoom: 20,
           enableHighAccuracy: true
         },
+        watch: true,
         setView: "always",
         position: "bottomright",
         showCompass: "true",
-        keepCurrentZoomLevel: "false",
+        //keepCurrentZoomLevel: "false",
         flyTo: "true",
+        //compassClass: "CompassMarker",
         // cacheLocation: "false",
         initialZoomLevel: 18,
-        clickBehavior:{inViewNotFollowing: 'inView'}
+        clickBehavior:{inViewNotFollowing: 'inView'},
   }).addTo(map);
-  
-   // Para obtener la latitud y longitud
+
+
+    // Para obtener la latitud y longitud
     function onLocationFound(e) {
         var radius = e.accuracy / 2;
 
@@ -135,41 +135,73 @@
         var lng = e.latlng.lng;
         console.log("latitud: " + lat)
         console.log("longitud: " + lng)
-	window.ReactNativeWebView.postMessage(JSON.stringify({ lat, lng }));
       }
-	
-	// Escucha los mensajes enviados desde la aplicación de React Native
-	window.addEventListener('message', function(event) {
-	  if (event.data && event.data.type === 'getLocation') {
-	    navigator.geolocation.getCurrentPosition(onLocationFound);
-	  }
-	});
-	
+
       function onLocationError(e) {
         alert(e.message);
       }
 
       map.on('locationfound', onLocationFound);
       map.on('locationerror', onLocationError);
-
+  
+  
     // Add zoom and rotation controls to the map.
     //map.addControl(new L.NavigationControl());
-	
-	
-//ver geoJson
- fetch('src/mapCicloRutas.geojson')
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
 
-      var geoJSONStyle = {
-      color: '#46FF00'
-    };
-    L.geoJSON(data, {
-      style: geoJSONStyle
-    }).addTo(map);
-      
-    });
+    // agregar Capa
+    //L.geoJson(mapciclorutas).addTo(map);
+
+      /*var geoJSONLayer;
+
+      function toggleGeoJSONVisibility(visibility) {
+        if (visibility) {
+          map.addLayer(geoJSONLayer);
+        } else {
+          map.removeLayer(geoJSONLayer);
+        }
+      }
+
+      function handleMessage(event) {
+        var data = JSON.parse(event.data);
+        var messageType = data.type;
+
+        if (messageType === 'toggleGeoJSON') {
+          var visibility = data.visibility;
+          toggleGeoJSONVisibility(visibility);
+        }
+      }
+
+      window.addEventListener('message', handleMessage);
+
+      fetch('src/mapCicloRutas.geojson')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          var geoJSONStyle = {
+            color: '#46FF00'
+          };
+
+          geoJSONLayer = L.geoJSON(data, {
+            style: geoJSONStyle
+          });
+
+          toggleGeoJSONVisibility(true); // Asegúrate de que el GeoJSON esté visible inicialmente
+        });*/
+    
+      fetch('src/mapCicloRutas.geojson')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+
+        var geoJSONStyle = {
+        color: '#46FF00'
+      };
+      L.geoJSON(data, {
+        style: geoJSONStyle
+      }).addTo(map);        
+      });
+
 
 </script>

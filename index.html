@@ -135,6 +135,7 @@
         var lng = e.latlng.lng;
         console.log("latitud: " + lat)
         console.log("longitud: " + lng)
+	    window.ReactNativeWebView.postMessage(JSON.stringify({ lat, lng }));
       }
 
       function onLocationError(e) {

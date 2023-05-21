@@ -157,42 +157,42 @@
 	
 	
 	//ver geoJson
-    var geoJSONLayer;
+      var geoJSONLayer;
 
-    function toggleGeoJSONVisibility(visibility) {
-      if (visibility) {
-        map.addLayer(geoJSONLayer);
-      } else {
-        map.removeLayer(geoJSONLayer);
+      function toggleGeoJSONVisibility(visibility) {
+        if (visibility) {
+          map.addLayer(geoJSONLayer);
+        } else {
+          map.removeLayer(geoJSONLayer);
+        }
       }
-    }
 
-    function handleMessage(event) {
-      var data = JSON.parse(event.data);
-      var messageType = data.type;
+      function handleMessage(event) {
+        var data = JSON.parse(event.data);
+        var messageType = data.type;
 
-      if (messageType === 'toggleGeoJSON') {
-        var visibility = data.visibility;
-        toggleGeoJSONVisibility(visibility);
+        if (messageType === 'toggleGeoJSON') {
+          var visibility = data.visibility;
+          toggleGeoJSONVisibility(visibility);
+        }
       }
-    }
 
-    window.addEventListener('message', handleMessage);
+      window.addEventListener('message', handleMessage);
 
-    fetch('src/mapCicloRutas.geojson')
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        var geoJSONStyle = {
-          color: '#46FF00'
-        };
+      fetch('src/mapCicloRutas.geojson')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          var geoJSONStyle = {
+            color: '#46FF00'
+          };
 
-        geoJSONLayer = L.geoJSON(data, {
-          style: geoJSONStyle
+          geoJSONLayer = L.geoJSON(data, {
+            style: geoJSONStyle
+          });
+
+          toggleGeoJSONVisibility(true); // Asegúrate de que el GeoJSON esté visible inicialmente
         });
-
-        toggleGeoJSONVisibility(true); // Asegúrate de que el GeoJSON esté visible inicialmente
-      });
 
 </script>
